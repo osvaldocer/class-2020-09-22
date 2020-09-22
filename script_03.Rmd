@@ -54,7 +54,7 @@ View(sep_old)
 
 **Prompt:** Read in and clean the new data, creating an object called `sep_new`. 
 
-```{r}
+```{r sc1}
 sep_new <-
   read_excel("new_data/class_enrollment_summary_by_term_9-22-2020.xlsx", skip = 3) %>%
   clean_names() %>%
@@ -63,8 +63,8 @@ sep_new <-
          -withdraw, -total, -instructor_full_name, -course_section_code) %>%
   rename(id = course_id, title = course_title, name = course_name, department = course_department) %>%
   group_by(title, id, name, department) %>% 
-  summarize(u_grad_pop = sum(u_grad), .groups = "drop") %>%
-  filter(u_grad_pop > 10)
+  summarize(new_u_grad_pop = sum(u_grad), .groups = "drop") %>%
+  filter(new_u_grad_pop > 10)
 view(sep_new)
 ```
 
@@ -90,6 +90,16 @@ After we have a model, Temperance suggests we should:
 
 **Prompt:** Which classes had the biggest increases and decreases in undergraduate enrollments between September 1 and today? Make a graphic that shows the 5 biggest increases and decreases. Make it look nice.
 
+```{r sc3}
+
+sep_both <- inner_join(sep_old, sep_new, by = c("id", "name", "department", "title"))
+
+sep_both %>%
+  mutate(changes = new_u_grad_pop - u_grad_pop) %>%
+  arrange(desc(changes))
+View(sep_both)
+
+```
 
 
 

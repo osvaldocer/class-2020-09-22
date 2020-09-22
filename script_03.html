@@ -410,8 +410,8 @@ View(sep_old)
          -withdraw, -total, -instructor_full_name, -course_section_code) %&gt;%
   rename(id = course_id, title = course_title, name = course_name, department = course_department) %&gt;%
   group_by(title, id, name, department) %&gt;% 
-  summarize(u_grad_pop = sum(u_grad), .groups = &quot;drop&quot;) %&gt;%
-  filter(u_grad_pop &gt; 10)
+  summarize(new_u_grad_pop = sum(u_grad), .groups = &quot;drop&quot;) %&gt;%
+  filter(new_u_grad_pop &gt; 10)
 view(sep_new)</code></pre>
 </div>
 <div id="scene-2" class="section level3">
@@ -423,6 +423,26 @@ view(sep_new)</code></pre>
 <div id="scene-3" class="section level3">
 <h3>Scene 3</h3>
 <p><strong>Prompt:</strong> Which classes had the biggest increases and decreases in undergraduate enrollments between September 1 and today? Make a graphic that shows the 5 biggest increases and decreases. Make it look nice.</p>
+<pre class="r"><code>sep_both &lt;- inner_join(sep_old, sep_new, by = c(&quot;id&quot;, &quot;name&quot;, &quot;department&quot;, &quot;title&quot;))
+
+sep_both %&gt;%
+  mutate(changes = new_u_grad_pop - u_grad_pop) %&gt;%
+  arrange(desc(changes))</code></pre>
+<pre><code>## # A tibble: 416 x 7
+##    title   id     name         department      u_grad_pop new_u_grad_pop changes
+##    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;                &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+##  1 MATH 2~ 207485 Vector Calc~ Mathematics            101            120      19
+##  2 LING 7~ 203507 Begin. Amer~ Linguistics             17             35      18
+##  3 COMPSC~ 113257 Supervised ~ Computer Scien~         23             39      16
+##  4 MATH 1A 123680 Introductio~ Mathematics            158            171      13
+##  5 ECON 1~ 119951 A Libertari~ Economics              145            154       9
+##  6 ENG-SC~ 118939 Innovation ~ Engineering Sc~         92            100       8
+##  7 MUSIC ~ 110114 Harvard-Rad~ Music                   26             34       8
+##  8 APMTH ~ 122094 Series Expa~ Applied Mathem~         57             63       6
+##  9 HAA 71  215877 Making Buil~ History of Art~         28             34       6
+## 10 SOCIOL~ 212659 Conflict, J~ Sociology               29             35       6
+## # ... with 406 more rows</code></pre>
+<pre class="r"><code>View(sep_both)</code></pre>
 </div>
 <div id="scene-4" class="section level2">
 <h2>Scene 4</h2>
