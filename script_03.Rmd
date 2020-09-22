@@ -39,8 +39,11 @@ sep_old <-
   rename(id = course_id,
          title = course_title,
          name = course_name,
-         department = course_department) %>% 
+         department = course_department) %>%
+  group_by(title) %>% 
+  summarize(u_grad_pop = sum(u_grad)) %>%
   filter(u_grad > 10)
+View(sep_old)
 
 # But this is not correct! Look for Gov 50: Data. What do you see? What can you
 # do to clean it up?
