@@ -427,22 +427,21 @@ view(sep_new)</code></pre>
 
 sep_both %&gt;%
   mutate(changes = new_u_grad_pop - u_grad_pop) %&gt;%
-  arrange(desc(changes))</code></pre>
-<pre><code>## # A tibble: 416 x 7
-##    title   id     name         department      u_grad_pop new_u_grad_pop changes
-##    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;                &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt;
-##  1 MATH 2~ 207485 Vector Calc~ Mathematics            101            120      19
-##  2 LING 7~ 203507 Begin. Amer~ Linguistics             17             35      18
-##  3 COMPSC~ 113257 Supervised ~ Computer Scien~         23             39      16
-##  4 MATH 1A 123680 Introductio~ Mathematics            158            171      13
-##  5 ECON 1~ 119951 A Libertari~ Economics              145            154       9
-##  6 ENG-SC~ 118939 Innovation ~ Engineering Sc~         92            100       8
-##  7 MUSIC ~ 110114 Harvard-Rad~ Music                   26             34       8
-##  8 APMTH ~ 122094 Series Expa~ Applied Mathem~         57             63       6
-##  9 HAA 71  215877 Making Buil~ History of Art~         28             34       6
-## 10 SOCIOL~ 212659 Conflict, J~ Sociology               29             35       6
-## # ... with 406 more rows</code></pre>
-<pre class="r"><code>View(sep_both)</code></pre>
+  arrange(desc(changes)) %&gt;%
+  slice(c(1:5, 412:416))</code></pre>
+<pre><code>## # A tibble: 10 x 7
+##    title    id     name           department   u_grad_pop new_u_grad_pop changes
+##    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;          &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+##  1 MATH 22A 207485 Vector Calcul~ Mathematics         101            120      19
+##  2 LING 73A 203507 Begin. Americ~ Linguistics          17             35      18
+##  3 COMPSCI~ 113257 Supervised Re~ Computer Sc~         23             39      16
+##  4 MATH 1A  123680 Introduction ~ Mathematics         158            171      13
+##  5 ECON 10~ 119951 A Libertarian~ Economics           145            154       9
+##  6 GENED 1~ 203045 The Democracy~ General Edu~        100             85     -15
+##  7 COMPSCI~ 123623 Systms Progra~ Computer Sc~        175            158     -17
+##  8 GENED 1~ 212765 Stories from ~ General Edu~        476            457     -19
+##  9 GENED 1~ 107821 Politic. Econ~ General Edu~        106             87     -19
+## 10 GOV 50   115859 Data           Government          173            150     -23</code></pre>
 </div>
 <div id="scene-4" class="section level2">
 <h2>Scene 4</h2>

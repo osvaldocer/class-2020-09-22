@@ -96,8 +96,8 @@ sep_both <- inner_join(sep_old, sep_new, by = c("id", "name", "department", "tit
 
 sep_both %>%
   mutate(changes = new_u_grad_pop - u_grad_pop) %>%
-  arrange(desc(changes))
-View(sep_both)
+  arrange(desc(changes)) %>%
+  slice(c(1:5, 412:416))
 
 ```
 
