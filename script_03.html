@@ -390,8 +390,11 @@ sep_old &lt;-
   rename(id = course_id,
          title = course_title,
          name = course_name,
-         department = course_department) %&gt;% 
-  filter(u_grad &gt; 10)
+         department = course_department) %&gt;%
+  group_by(title, id, name, department) %&gt;% 
+  summarize(u_grad_pop = sum(u_grad), .groups = &quot;drop&quot;) %&gt;%
+  filter(u_grad_pop &gt; 10)
+View(sep_old)
 
 # But this is not correct! Look for Gov 50: Data. What do you see? What can you
 # do to clean it up?</code></pre>
@@ -399,12 +402,23 @@ sep_old &lt;-
 <div id="scene-1" class="section level3">
 <h3>Scene 1</h3>
 <p><strong>Prompt:</strong> Read in and clean the new data, creating an object called <code>sep_new</code>.</p>
+<pre class="r"><code>sep_new &lt;-
+  read_excel(&quot;new_data/class_enrollment_summary_by_term_9-22-2020.xlsx&quot;, skip = 3) %&gt;%
+  clean_names() %&gt;%
+  filter(! is.na(course_title)) %&gt;%
+  select(-grad, -non_degree, -x_reg, -vus, -employee, 
+         -withdraw, -total, -instructor_full_name, -course_section_code) %&gt;%
+  rename(id = course_id, title = course_title, name = course_name, department = course_department) %&gt;%
+  group_by(title, id, name, department) %&gt;% 
+  summarize(u_grad_pop = sum(u_grad), .groups = &quot;drop&quot;) %&gt;%
+  filter(u_grad_pop &gt; 10)
+view(sep_new)</code></pre>
 </div>
 <div id="scene-2" class="section level3">
 <h3>Scene 2</h3>
 <p><strong>Prompt:</strong> Dean Amanda Claybaugh is concerned about the drop in undergraduate enrollment in some courses between September 1 and today. She wants you to analyze this issue. Before you dive into the details, provide some bullet points as to how Wisdom and Temperance apply to this situation. Every student should have several bullet points. Someone may be asked to share their screen and discuss. Refer to the Chapter 3 discussions about these Cardinal Virtues. Open it up in your browser.</p>
-<p>Before we start on the model, Wisdom suggests we should:</p>
-<p>After we have a model, Temperance suggests we should:</p>
+<p>Before we start on the model, Wisdom suggests we should: - make reasonable assumptions - keep in mind potentially missing data</p>
+<p>After we have a model, Temperance suggests we should: - keep in mind individual variation - keep in mind uncertainty when measuring the ATE - randomization is impossible in this situation</p>
 </div>
 <div id="scene-3" class="section level3">
 <h3>Scene 3</h3>

@@ -40,9 +40,9 @@ sep_old <-
          title = course_title,
          name = course_name,
          department = course_department) %>%
-  group_by(title) %>% 
-  summarize(u_grad_pop = sum(u_grad)) %>%
-  filter(u_grad > 10)
+  group_by(title, id, name, department) %>% 
+  summarize(u_grad_pop = sum(u_grad), .groups = "drop") %>%
+  filter(u_grad_pop > 10)
 View(sep_old)
 
 # But this is not correct! Look for Gov 50: Data. What do you see? What can you
@@ -54,6 +54,19 @@ View(sep_old)
 
 **Prompt:** Read in and clean the new data, creating an object called `sep_new`. 
 
+```{r}
+sep_new <-
+  read_excel("new_data/class_enrollment_summary_by_term_9-22-2020.xlsx", skip = 3) %>%
+  clean_names() %>%
+  filter(! is.na(course_title)) %>%
+  select(-grad, -non_degree, -x_reg, -vus, -employee, 
+         -withdraw, -total, -instructor_full_name, -course_section_code) %>%
+  rename(id = course_id, title = course_title, name = course_name, department = course_department) %>%
+  group_by(title, id, name, department) %>% 
+  summarize(u_grad_pop = sum(u_grad), .groups = "drop") %>%
+  filter(u_grad_pop > 10)
+view(sep_new)
+```
 
 
 ### Scene 2
@@ -62,12 +75,15 @@ View(sep_old)
 
 
 Before we start on the model, Wisdom suggests we should:
-
+- make reasonable assumptions
+- keep in mind potentially missing data
 
 
 
 After we have a model, Temperance suggests we should:
-
+- keep in mind individual variation
+- keep in mind uncertainty when measuring the ATE
+- randomization is impossible in this situation
 
 
 ### Scene 3
